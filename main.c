@@ -1,6 +1,6 @@
 #include "lvgl/lvgl.h"
 #include "lvgl/demos/lv_demos.h"
-#include "lv_drivers/display/fbdev.h"
+#include "lv_drivers/display/drm.h"
 #include "lv_drivers/indev/evdev.h"
 #include <unistd.h>
 #include <pthread.h>
@@ -15,7 +15,7 @@ int main(void)
     lv_init();
 
     /*Linux frame buffer device init*/
-    fbdev_init();
+    drm_init();
 
     /*A small buffer for LittlevGL to draw the screen's content*/
     static lv_color_t buf[DISP_BUF_SIZE];
@@ -28,7 +28,7 @@ int main(void)
     static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.draw_buf   = &disp_buf;
-    disp_drv.flush_cb   = fbdev_flush;
+    disp_drv.flush_cb   = drm_flush;
     disp_drv.hor_res    = 800;
     disp_drv.ver_res    = 480;
     lv_disp_drv_register(&disp_drv);
